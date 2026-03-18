@@ -62,3 +62,44 @@ This repo coordinates with specialized repos (paths TBD):
 - OpenSCAD 3D modelling
 
 When working on sub-project-specific code/hardware configs, check `subprojects/README.md` for the dedicated repo first. This repo owns: preparation logistics, web presentation, print materials, and overall coordination.
+
+---
+
+## Worktree: Web Presentation
+
+**This worktree (`worktree-web-presentation`) is scoped to the web presentation** — everything under `web/`.
+
+### Current state
+
+| File | Purpose |
+|------|---------|
+| `web/index.html` | Landing page with project cards |
+| `web/styles.css` | Shared CSS (custom properties, dark theme, responsive) |
+| `web/projects/voron.html` | Voron 3D printers detail page |
+| `web/projects/rc-auto.html` | RC LEGO car detail page |
+| `web/projects/henna.html` | Henna art detail page |
+| `web/projects/compliant-models.html` | Compliant mechanisms detail page |
+| `web/projects/photo-to-3d.html` | Photo-to-3D pipeline detail page |
+
+### Key conventions (web)
+
+- **Pure static HTML/CSS** — no framework, no bundler, no build step
+- **Dark theme**: background `--gray-950`, amber/orange accent palette (`--amber-*`, `--orange-*`)
+- **Custom properties** in `web/styles.css :root`
+- **Responsive**: mobile breakpoint at 640 px
+- **Czech content** — all user-facing text is in Czech
+- Preview by opening `web/index.html` directly in a browser
+
+### In scope
+
+- HTML pages and structure (`web/`)
+- CSS styling, layout, responsiveness (`web/styles.css`)
+- Adding/editing project detail pages (`web/projects/*.html`)
+- Image and asset references used by the site
+
+### Out of scope
+
+- Print materials (`print-materials/`) — separate worktree / main branch
+- Event preparation and logistics (`preparation/`)
+- Sub-project hardware, firmware, configs (`subprojects/`)
+- Deployment infrastructure (not yet decided)
