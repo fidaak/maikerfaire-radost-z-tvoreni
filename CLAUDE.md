@@ -62,3 +62,48 @@ This repo coordinates with specialized repos (paths TBD):
 - OpenSCAD 3D modelling
 
 When working on sub-project-specific code/hardware configs, check `subprojects/README.md` for the dedicated repo first. This repo owns: preparation logistics, web presentation, print materials, and overall coordination.
+
+---
+
+## Worktree: Booth Network Setup
+
+**This worktree (`worktree-network-setup`) is scoped to planning and configuring the booth LAN** — secure local network for 3D printers, mini PC, and optional venue internet uplink.
+
+### Hardware inventory
+
+| Device | Network interface | Notes |
+|--------|-------------------|-------|
+| **Minisforum MS-S1 MAX** (AMD Strix Halo) | 2× 10GbE RJ45 (RTL8127), WiFi 7 (MT7925B), BT 5.4 | Main compute node; could double as software router |
+| **Voron 2.4r2** (Klipper) | Ethernet (cable) | Must be on the local LAN |
+| **Voron 0.2** (Klipper) | 2.4 GHz WiFi only | Needs a local AP broadcasting 2.4 GHz |
+| Venue uplink | Ethernet drop or WiFi (TBD) | May not be available; plan for offline operation |
+
+### Network architecture options (to be decided)
+
+1. **Travel router (GL.iNet GL-MT3000 or similar)** + small unmanaged switch — dedicated network appliance, simplest day-of setup, independent of mini PC state
+2. **MS-S1 MAX as Linux software router** — hostapd AP + dnsmasq DHCP + nftables NAT; no extra hardware, but couples network to the compute node
+3. **Hybrid** — travel router for uplink/WiFi AP, mini PC wired directly to printers via its dual 10GbE ports
+
+### Key requirements
+
+- **Local LAN always works** — printers must be reachable from the mini PC regardless of venue internet
+- **2.4 GHz WiFi AP** — required for Voron 0.2; must be reliable in a crowded 2.4 GHz venue environment
+- **Security** — WPA2/3 on WiFi, no open ports to venue network, firewall between WAN and LAN
+- **Portability** — everything fits in a bag, minimal cable mess, fast setup at the venue
+- **Offline-capable** — the booth network must function without any venue uplink
+
+### In scope
+
+- Network topology design and documentation
+- Hardware shopping list / packing checklist
+- Linux network configuration (if using MS-S1 MAX as router): hostapd, dnsmasq, nftables, systemd-networkd
+- Travel router configuration (if using GL.iNet): OpenWrt settings, SSID/password, DHCP reservations
+- Klipper/Moonraker network requirements for both Vorons
+- Security hardening (firewall rules, WiFi encryption, isolating WAN from LAN)
+
+### Out of scope
+
+- Web presentation (`web/`) — separate worktree
+- Print materials, event logistics
+- Klipper firmware or printer hardware (only network connectivity aspects)
+- Sub-project repos (RC car, OpenSCAD models)
