@@ -47,3 +47,10 @@ npm-debug.log*
 *.step
 *.obj
 *.3mf
+
+# Media search tool
+tools/media-search/.venv/
+tools/media-search/*.faiss
+tools/media-search/*.db
+tools/media-search/keyframes/
+assets/search-results/

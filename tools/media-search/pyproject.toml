@@ -1,0 +1,20 @@
+[project]
+name = "media-search"
+version = "0.2.0"
+description = "CLIP-based semantic search for photos and videos — MakerFaire KV 2026 booth material curation"
+requires-python = ">=3.10"
+dependencies = [
+    "open-clip-torch",
+    "torch",
+    "torchvision",
+    "faiss-cpu",
+    "Pillow",
+    "tqdm",
+    "ffmpeg-python",
+    "gradio",
+]
+
+[project.scripts]
+media-index = "index:main"
+media-search = "search:main"
+media-extract-frames = "extract_frames:main"
