@@ -24,6 +24,7 @@ web/             Webová prezentace projektu
 print-materials/ Podklady pro laminované A4 informační listy
 subprojects/     Odkazy na dílčí repozitáře
 assets/          Fotky, QR kódy, loga, modely
+tools/           Pomocné nástroje (hledání fotek, budoucí automatizace)
 ```
 
 ## Tým

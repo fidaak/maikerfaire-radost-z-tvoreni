@@ -19,6 +19,8 @@ web/               Static site presentation (HTML/CSS, no build system)
 print-materials/   Markdown sources for laminated A4 info sheets with QR codes
 subprojects/       Links and notes connecting to external specialized repos
 assets/            Photos, QR codes, logos, 3D models (mostly .gitkeep placeholders)
+tools/             Utility scripts and local tools
+  media-search/    CLIP ViT-L-14 semantic photo search (Gradio UI + CLI); indexes ~29k photos
 ```
 
 ## Sub-projects
