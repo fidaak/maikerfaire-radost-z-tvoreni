@@ -1,5 +1,17 @@
 # Changelog — media-search
 
+## v0.4.0 — 2026-03-19
+
+### Added
+- Pagination: fetch up to 2000 candidates from FAISS per query; store all metadata (no PIL) in state; render one page at a time from disk on demand
+- **← Zpět / Další →** navigation buttons in the status bar; disabled until first search
+- Status line shows `Strana X / Y · Z výsledků`
+
+### Changed
+- `top_k` hard-cap slider removed; replaced by **"Na stránku"** (items per page, 10–60)
+- Column resize now re-reads the current page from disk — no stale PIL cache
+- All above-threshold results are always reachable through pagination
+
 ## v0.3.0 — 2026-03-19
 
 ### Added
