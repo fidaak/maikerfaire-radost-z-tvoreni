@@ -1,5 +1,17 @@
 # Changelog — media-search
 
+## v0.3.0 — 2026-03-19
+
+### Added
+- `app.py`: detail panel shown on gallery photo click
+  - File path, source, date, dimensions
+  - Keyword match table: 18 predefined MakerFaire-relevant English terms scored against the selected photo via CLIP cosine similarity; keyword embeddings pre-computed at startup (zero per-click overhead)
+  - **"Otevřít v prohlížeči" button** — explicit user action; replaces previous auto-open behavior
+
+### Changed
+- `app.py`: gallery click no longer auto-opens the native viewer; `os.startfile` moved behind the explicit button
+- `app.py`: compact control layout — source filter changed to `gr.Dropdown`, sliders use `min_width` caps, both status messages share one row, gallery label removed; ~180 px vertical space saved for the gallery
+
 ## v0.2.0 — 2026-03-19
 
 ### Added

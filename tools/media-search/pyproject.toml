@@ -1,6 +1,6 @@
 [project]
 name = "media-search"
-version = "0.2.0"
+version = "0.3.0"
 description = "CLIP-based semantic search for photos and videos — MakerFaire KV 2026 booth material curation"
 requires-python = ">=3.10"
 dependencies = [
