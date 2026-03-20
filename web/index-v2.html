@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matterhackers Radošov – Radost z tvoření | MakerFaire KV 2026</title>
+  <meta name="description" content="Rodinný tým tvůrců na MakerFaire Karlovy Vary 2026. 3D tisk, RC auto, henna a další.">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Custom Properties ─────────────────────────────── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #121212;
+      --surface2: #1a1818;
+      --border: #242020;
+      --border-bright: #383030;
+      /* Voron printer palette: yellow printed parts + red extrusions */
+      --amber: #f5c800;           /* Voron yellow – main accent (section nums, prompts, borders) */
+      --amber-dim: #c49600;       /* Voron yellow dim */
+      --amber-glow: rgba(245, 200, 0, 0.12);
+      --amber-text: #dc2e10;      /* Voron red – links & special highlights */
+      --cyan: #dc2e10;            /* reuse red as secondary */
+      --text: #e8e0d8;
+      --text-dim: #8a8070;
+      --text-faint: #3a3030;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: var(--amber-text);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--amber);
+    }
+
+    /* ── Animations ────────────────────────────────────────────── */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .cursor {
+      animation: blink 1s step-end infinite;
+    }
+
+    /* ── Header ────────────────────────────────────────────────── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 11, 9, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-bright);
+      padding: 0.75rem 1rem;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .logo {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--amber);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .nav-toggle {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      border: 1px solid var(--border-bright);
+      padding: 0.2rem 0.6rem;
+      background: transparent;
+      list-style: none;
+    }
+
+    .nav-toggle::-webkit-details-marker {
+      display: none;
+    }
+
+    .nav-toggle::marker {
+      content: '';
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      padding-top: 0.5rem;
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      letter-spacing: 0.02em;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--amber-text);
+    }
+
+    /* ── Hero ──────────────────────────────────────────────────── */
+    .hero {
+      padding: 3.5rem 1rem 3rem;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 4px
+        ),
+        radial-gradient(
+          ellipse at 50% -10%,
+          rgba(245, 200, 0, 0.07) 0%,
+          transparent 60%
+        ),
+        var(--bg);
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-prompt {
+      font-size: 0.75rem;
+      color: var(--amber-dim);
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 .accent {
+      color: var(--amber);
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-badge {
+      font-size: 0.8rem;
+      color: var(--amber-text);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .hero-badge .block {
+      color: var(--amber);
+    }
+
+    /* ── Section Label ─────────────────────────────────────────── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 1rem;
+    }
+
+    .section-num {
+      font-size: 0.75rem;
+      color: var(--amber);
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    .section-title {
+      font-size: 0.85rem;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .section-line {
+      flex-grow: 1;
+      overflow: hidden;
+      color: var(--amber-dim);
+      font-size: 0.85rem;
+      letter-spacing: -0.05em;
+      opacity: 0.4;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    /* ── Projects Section ──────────────────────────────────────── */
+    .projects {
+      padding: 3rem 0;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* ── Card ──────────────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--amber-dim);
+      box-shadow: 0 0 20px var(--amber-glow);
+    }
+
+    .card-img {
+      position: relative;
+      height: 180px;
+      overflow: hidden;
+    }
+
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.75) saturate(0.8);
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .card-img img {
+      transform: scale(1.04);
+    }
+
+    .card-img-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60%;
+      background: linear-gradient(to bottom, transparent, var(--surface));
+      pointer-events: none;
+    }
+
+    .card-body {
+      padding: 1rem;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-num {
+      color: var(--text-dim);
+    }
+
+    .card-tag {
+      color: var(--amber-dim);
+      border: 1px solid var(--border-bright);
+      padding: 0.1rem 0.4rem;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .card-title {
+      margin-bottom: 0.5rem;
+    }
+
+    .card-title a {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      letter-spacing: 0.04em;
+    }
+
+    .card-title a:hover {
+      color: var(--amber);
+    }
+
+    .card-desc {
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+
+    /* ── About Section ─────────────────────────────────────────── */
+    .about {
+      padding: 3rem 0;
+    }
+
+    .about-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .terminal-block {
+      background: var(--surface);
+      border-left: 3px solid var(--amber);
+      padding: 1.5rem;
+      border-radius: 0 4px 4px 0;
+      margin-top: 2rem;
+    }
+
+    .terminal-line {
+      margin-bottom: 1rem;
+    }
+
+    .terminal-line:last-child {
+      margin-bottom: 0;
+    }
+
+    .terminal-prompt {
+      color: var(--amber);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .terminal-response {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      padding-left: 1rem;
+      display: block;
+    }
+
+    /* ── Footer ────────────────────────────────────────────────── */
+    .site-footer {
+      padding: 2.5rem 1rem;
+      text-align: center;
+      color: var(--text-faint);
+      font-size: 0.75rem;
+      border-top: 1px solid var(--border);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Responsive: 640px+ ────────────────────────────────────── */
+    @media (min-width: 640px) {
+      body {
+        font-size: 15px;
+      }
+
+      .nav-toggle {
+        display: none;
+      }
+
+      .nav-details[open] .nav-links,
+      .nav-links {
+        display: flex;
+        flex-direction: row;
+        gap: 1.25rem;
+        padding-top: 0;
+        width: auto;
+      }
+
+      /* Force nav links visible on desktop without needing <details> open */
+      .nav-details {
+        display: contents;
+      }
+
+      .nav-details .nav-links {
+        display: flex;
+      }
+
+      .hero {
+        padding: 5rem 1.5rem 4rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.5rem, 7vw, 4.5rem);
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .card-img {
+        height: 200px;
+      }
+
+      .section-label {
+        padding: 0 1.5rem;
+      }
+
+      .cards {
+        padding: 0 1.5rem;
+      }
+
+      .about-inner {
+        padding: 0 1.5rem;
+      }
+    }
+
+    /* ── Responsive: 1024px+ ───────────────────────────────────── */
+    @media (min-width: 1024px) {
+      .hero {
+        padding: 6rem 1.5rem 5rem;
+      }
+
+      .cards {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ Header ═══ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">MATTERHACKERS_RADOŠOV</div>
+      <details class="nav-details">
+        <summary class="nav-toggle">≡</summary>
+        <nav class="nav-links">
+          <a href="#projekty">[projekty]</a>
+          <a href="#o-nas">[o_nás]</a>
+          <a href="https://makerfaire.cz/projekt/matterhackers-radosov-radost-z-tvoreni/" target="_blank" rel="noopener">[makerfaire↗]</a>
+        </nav>
+      </details>
+    </div>
+  </header>
+
+  <!-- ═══ Hero ═══ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-prompt">$ ./booth --year=2026 --location=karlovy-vary</p>
+      <h1>RADOST Z <span class="accent">TVOŘENÍ</span></h1>
+      <p class="hero-subtitle">CAD · 3D tisk · RC auta · henna · moderní technologie</p>
+      <p class="hero-badge"><span class="block">█</span> MakerFaire Karlovy Vary 2026<span class="cursor">▌</span></p>
+    </div>
+  </section>
+
+  <!-- ═══ Projects ═══ -->
+  <section class="projects" id="projekty">
+
+    <div class="section-label">
+      <span class="section-num">[01]</span>
+      <span class="section-title">NAŠE PROJEKTY</span>
+      <span class="section-line">──────────────────────────────────────────────────────────────────────────────────────</span>
+    </div>
+
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-img">
+          <img src="assets/photos/voron.jpg" alt="Voron 3D tiskárna - vlastní stavba CoreXY">
+          <div class="card-img-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-num">// 01</span>
+            <span class="card-tag">--3d-tisk</span>
+          </div>
+          <h3 class="card-title"><a href="projects/voron.html">Voron 3D tiskárny</a></h3>
+          <p class="card-desc">Vlastnoručně postavené tiskárny Voron 2.4r2 a Voron 0.2. CoreXY, Klipper firmware, přesnost pod 0.1 mm.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-img">
+          <img src="assets/photos/rc-auto.jpg" alt="RC LEGO auto s drony komponenty">
+          <div class="card-img-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-num">// 02</span>
+            <span class="card-tag">--rc-auto</span>
+          </div>
+          <h3 class="card-title"><a href="projects/rc-auto.html">RC LEGO auto</a></h3>
+          <p class="card-desc">Motorizované LEGO RC auto s drony komponenty a upraveným firmware. Stavba, úpravy, jízda.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-img">
+          <img src="assets/photos/henna.jpg" alt="Henna malování na ruku">
+          <div class="card-img-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-num">// 03</span>
+            <span class="card-tag">--henna</span>
+          </div>
+          <h3 class="card-title"><a href="projects/henna.html">Henna malování</a></h3>
+          <p class="card-desc">Naše dcera předvádí tradiční umění henna malování na kůži. Přijďte si nechat namalovat vlastní vzor!</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-img">
+          <img src="assets/photos/compliant.jpg" alt="Compliant mechanismus - pružný 3D tisk">
+          <div class="card-img-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-num">// 04</span>
+            <span class="card-tag">--compliant</span>
+          </div>
+          <h3 class="card-title"><a href="projects/compliant-models.html">Compliant modely</a></h3>
+          <p class="card-desc">3D tištěné modely s pružnými mechanismy – pohyb bez kloubů, jen díky geometrii. Print-in-place magie.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-img">
+          <img src="assets/photos/photo-to-3d.jpg" alt="Photo-to-3D pipeline - experimentální projekt">
+          <div class="card-img-overlay"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-num">// 05</span>
+            <span class="card-tag">--ai-pipeline</span>
+          </div>
+          <h3 class="card-title"><a href="projects/photo-to-3d.html">Foto → 3D model</a></h3>
+          <p class="card-desc">Experimentální pipeline: vyfotíte objekt a pomocí LLM vznikne parametrický 3D model k vytištění.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ═══ About ═══ -->
+  <section class="about" id="o-nas">
+
+    <div class="section-label">
+      <span class="section-num">[02]</span>
+      <span class="section-title">O NÁS</span>
+      <span class="section-line">──────────────────────────────────────────────────────────────────────────────────────</span>
+    </div>
+
+    <div class="about-inner">
+      <div class="terminal-block">
+        <div class="terminal-line">
+          <span class="terminal-prompt">&gt; whoami</span>
+          <span class="terminal-response">Jsme Matterhackers Radošov – rodina tvůrců z Radošova u Karlových Varů. Filip Novotný (fyzik a maker) spolu s celou rodinou staví tiskárny, navrhuje modely, bastlí elektroniku a tvoří umění.</span>
+        </div>
+        <div class="terminal-line">
+          <span class="terminal-prompt">&gt; ls members/</span>
+          <span class="terminal-response">filip_novotny/&nbsp;&nbsp;&nbsp;rodina/&nbsp;&nbsp;&nbsp;věk_7-40+/</span>
+        </div>
+        <div class="terminal-line">
+          <span class="terminal-prompt">&gt; cat manifest.txt</span>
+          <span class="terminal-response">Na MakerFaire chceme ukázat, že technologie a tvořivost nemají věkový limit. Každý z nás přispívá po svém – od návrhu v CADu po malování hennou. Přijďte se podívat, osahat a inspirovat.</span>
+        </div>
+        <div class="terminal-line">
+          <span class="terminal-prompt">&gt; echo $MOTTO</span>
+          <span class="terminal-response" style="color: var(--amber-text);">Radost z tvoření.<span class="cursor">▌</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Footer ═══ -->
+  <footer class="site-footer">
+    // Matterhackers Radošov · MakerFaire KV 2026
+  </footer>
+
+</body>
+</html>
