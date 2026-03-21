@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matterhackers Radošov – Radost z tvoření | MakerFaire KV 2026</title>
+  <meta name="description" content="Rodinný tým tvůrců na MakerFaire Karlovy Vary 2026. 3D tisk, RC auto, henna a další.">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* === Reset === */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #080808;
+      --surface: #101010;
+      --surface2: #181818;
+      --border: #222222;
+      --neon: #ff6b1a;
+      --neon-dim: #cc4a00;
+      --neon-glow: rgba(255, 107, 26, 0.15);
+      --neon-glow-strong: rgba(255, 107, 26, 0.35);
+      --amber: #f59e0b;
+      --text: #f0f0f0;
+      --text-dim: #888888;
+      --text-faint: #333333;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    h1, h2, h3, h4 {
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    /* === Container === */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* === Header === */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(8, 8, 8, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.875rem 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .logo-tagline {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--neon-dim);
+      white-space: nowrap;
+    }
+
+    .nav-toggle {
+      display: none;
+    }
+
+    .nav-toggle-label {
+      display: none;
+      cursor: pointer;
+      width: 28px;
+      height: 20px;
+      position: relative;
+      z-index: 1001;
+    }
+
+    .nav-toggle-label span,
+    .nav-toggle-label span::before,
+    .nav-toggle-label span::after {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--text);
+      position: absolute;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .nav-toggle-label span {
+      top: 9px;
+    }
+
+    .nav-toggle-label span::before {
+      content: '';
+      top: -7px;
+    }
+
+    .nav-toggle-label span::after {
+      content: '';
+      top: 7px;
+    }
+
+    .nav-toggle:checked + .nav-toggle-label span {
+      background: transparent;
+    }
+
+    .nav-toggle:checked + .nav-toggle-label span::before {
+      top: 0;
+      transform: rotate(45deg);
+      background: var(--neon);
+    }
+
+    .nav-toggle:checked + .nav-toggle-label span::after {
+      top: 0;
+      transform: rotate(-45deg);
+      background: var(--neon);
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .site-nav a {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      transition: color 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .site-nav a:hover {
+      color: var(--neon);
+    }
+
+    /* === Hero === */
+    .hero {
+      position: relative;
+      min-height: 70vh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.35) saturate(0.7);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 30%, rgba(8, 8, 8, 0.8) 70%, var(--bg) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding-top: 8rem;
+      padding-bottom: 3rem;
+    }
+
+    .hero-label {
+      font-family: 'Space Mono', monospace;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--neon);
+      border: 1px solid var(--neon-dim);
+      padding: 0.25rem 0.75rem;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 900;
+      line-height: 0.95;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 20px var(--neon-glow-strong);
+    }
+
+    .hero-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.85rem;
+      border: 2px solid var(--neon);
+      color: var(--neon);
+      padding: 0.75rem 2rem;
+      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .hero-cta:hover {
+      background: var(--neon);
+      color: #000;
+      box-shadow: 0 0 0 1px var(--neon), 0 0 20px var(--neon-glow);
+    }
+
+    /* === Sections shared === */
+    .section-header {
+      position: relative;
+      border-top: 2px solid var(--neon);
+      padding-top: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 2.5rem;
+      color: var(--neon);
+      opacity: 0.3;
+      font-weight: 700;
+      line-height: 1;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* === Projects section === */
+    .projects {
+      padding: 5rem 0;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    /* === Card === */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: var(--neon-dim);
+    }
+
+    .card-link {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .card-photo {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+    }
+
+    .card-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .card-photo img {
+      transform: scale(1.06);
+    }
+
+    .card-photo-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: var(--neon);
+      color: #000;
+      padding: 0.2rem 0.6rem;
+      font-weight: 700;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+    }
+
+    .card-body h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .card:hover .card-body h3 {
+      color: var(--neon);
+    }
+
+    .card-body p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* Featured card (Voron) */
+    .card-featured .card-photo {
+      aspect-ratio: 16 / 9;
+    }
+
+    /* === About section === */
+    .about {
+      padding: 5rem 0;
+      background: var(--surface);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .about-text p {
+      color: var(--text-dim);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .about-text strong {
+      color: #fff;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--neon);
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+    }
+
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+    }
+
+    /* === Footer === */
+    .site-footer {
+      border-top: 2px solid var(--neon);
+      padding: 2.5rem 0;
+      background: var(--bg);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      text-align: center;
+    }
+
+    .footer-name {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    .footer-name strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      transition: color 0.25s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--neon);
+    }
+
+    /* ====================================
+       RESPONSIVE: 640px
+       ==================================== */
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 2rem;
+      }
+
+      .hero {
+        min-height: 80vh;
+      }
+
+      .hero-content {
+        padding-bottom: 4rem;
+      }
+
+      .hero-sub {
+        font-size: 1.1rem;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .card-featured {
+        grid-column: span 2;
+      }
+
+      .card-featured .card-link {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .card-featured .card-photo {
+        aspect-ratio: auto;
+        min-height: 280px;
+      }
+
+      .card-featured .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2rem;
+      }
+
+      .card-featured .card-body h3 {
+        font-size: 1.35rem;
+      }
+
+      .card-featured .card-body p {
+        font-size: 0.95rem;
+      }
+
+      .card-photo {
+        aspect-ratio: 3 / 2;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: start;
+      }
+
+      .stat-value {
+        font-size: 1.75rem;
+      }
+
+      .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+      }
+    }
+
+    /* ====================================
+       RESPONSIVE: 1024px
+       ==================================== */
+    @media (min-width: 1024px) {
+      .container {
+        padding: 0 3rem;
+      }
+
+      .hero {
+        min-height: 85vh;
+      }
+
+      .hero-content {
+        padding-top: 10rem;
+        padding-bottom: 5rem;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .card-featured .card-link {
+        grid-template-columns: 3fr 2fr;
+      }
+
+      .card-featured .card-photo {
+        min-height: 320px;
+      }
+
+      .card-featured .card-body {
+        padding: 2.5rem;
+      }
+
+      .card-featured .card-body h3 {
+        font-size: 1.5rem;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+      }
+    }
+
+    /* ====================================
+       MOBILE NAV: below 640px
+       ==================================== */
+    @media (max-width: 639px) {
+      .logo-tagline {
+        display: none;
+      }
+
+      .nav-toggle-label {
+        display: block;
+      }
+
+      .site-nav {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 240px;
+        height: 100vh;
+        background: var(--surface);
+        border-left: 1px solid var(--border);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5rem 2rem 2rem;
+        gap: 1.5rem;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+      }
+
+      .site-nav a {
+        font-size: 1rem;
+        color: var(--text);
+      }
+
+      .nav-toggle:checked ~ .site-nav {
+        transform: translateX(0);
+      }
+
+      .nav-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 998;
+      }
+
+      .nav-toggle:checked ~ .nav-backdrop {
+        display: block;
+      }
+
+      .hero-content {
+        padding-top: 6rem;
+      }
+
+      .stats {
+        gap: 1rem;
+      }
+
+      .stat-value {
+        font-size: 1.25rem;
+      }
+
+      .stat-label {
+        font-size: 0.65rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-group">
+        <a href="index-v3.html" class="logo">Matterhackers Radošov</a>
+        <span class="logo-tagline">// radost z tvoření</span>
+      </div>
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Otevřít menu">
+      <label for="nav-toggle" class="nav-toggle-label"><span></span></label>
+      <nav class="site-nav">
+        <a href="#projekty">Projekty</a>
+        <a href="#o-nas">O nás</a>
+        <a href="https://makerfaire.cz/projekt/matterhackers-radosov-radost-z-tvoreni/" target="_blank" rel="noopener">MakerFaire</a>
+      </nav>
+      <label for="nav-toggle" class="nav-backdrop"></label>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg" style="background-image: url('../../makerfaire-radost-z-tvoreni/assets/search-results/Voron_printer/004_20201209_113113.jpg')"></div>
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <span class="hero-label">MakerFaire Karlovy Vary 2026</span>
+      <h1>Radost<br>z tvoření</h1>
+      <p class="hero-sub">CAD · 3D tisk · RC auta · henna art · AI experiments</p>
+      <a href="#projekty" class="hero-cta">Prozkoumat projekty &#8594;</a>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="projects" id="projekty">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2>Naše projekty</h2>
+      </div>
+
+      <div class="cards">
+
+        <!-- Featured: Voron -->
+        <article class="card card-featured">
+          <a href="projects/voron.html" class="card-link">
+            <div class="card-photo">
+              <img src="../../makerfaire-radost-z-tvoreni/assets/search-results/Voron_printer/004_20201209_113113.jpg" alt="Voron 3D tiskárna v provozu" loading="lazy">
+              <div class="card-photo-label">3D tisk</div>
+            </div>
+            <div class="card-body">
+              <h3>Voron 3D tiskárny</h3>
+              <p>Vlastnoručně postavené CoreXY tiskárny Voron 2.4r2 a Voron 0.2 s Klipper firmware. Tiskový objem až 350&times;350 mm, přesnost pod 0.1 mm. Na stánku je uvidíte tisknout živě.</p>
+            </div>
+          </a>
+        </article>
+
+        <!-- RC auto -->
+        <article class="card">
+          <a href="projects/rc-auto.html" class="card-link">
+            <div class="card-photo">
+              <img src="../../makerfaire-radost-z-tvoreni/assets/search-results/LEGO_car/011_PXL_20241022_162019744.jpg" alt="RC LEGO auto s dronovými komponenty" loading="lazy">
+              <div class="card-photo-label">RC &amp; Elektronika</div>
+            </div>
+            <div class="card-body">
+              <h3>RC LEGO auto</h3>
+              <p>LEGO Technic podvozek s brushless motory z dronu a upraveným firmware. Stavba, úpravy, jízda na stánku.</p>
+            </div>
+          </a>
+        </article>
+
+        <!-- Henna -->
+        <article class="card">
+          <a href="projects/henna.html" class="card-link">
+            <div class="card-photo">
+              <img src="../../makerfaire-radost-z-tvoreni/assets/search-results/henna_painting_on_hand/001_IMG_1262.JPG" alt="Henna malování na ruce" loading="lazy">
+              <div class="card-photo-label">Umění</div>
+            </div>
+            <div class="card-body">
+              <h3>Henna malování</h3>
+              <p>Naše dcera předvádí tradiční umění henna malování na kůži. Přijďte si nechat namalovat vlastní vzor!</p>
+            </div>
+          </a>
+        </article>
+
+        <!-- Compliant -->
+        <article class="card">
+          <a href="projects/compliant-models.html" class="card-link">
+            <div class="card-photo">
+              <img src="../../makerfaire-radost-z-tvoreni/assets/search-results/compliant_mechanism/001_20230124_101644.jpg" alt="Compliant mechanismus vytištěný na 3D tiskárně" loading="lazy">
+              <div class="card-photo-label">3D tisk &amp; Design</div>
+            </div>
+            <div class="card-body">
+              <h3>Compliant modely</h3>
+              <p>3D tištěné modely s pružnými mechanismy -- pohyb bez kloubů, jen díky geometrii. Print-in-place flexibilní struktury.</p>
+            </div>
+          </a>
+        </article>
+
+        <!-- Photo to 3D -->
+        <article class="card">
+          <a href="projects/photo-to-3d.html" class="card-link">
+            <div class="card-photo">
+              <img src="../../makerfaire-radost-z-tvoreni/assets/search-results/Voron_printer/010_20210304_174751.jpg" alt="Parametrický 3D model z fotografie" loading="lazy">
+              <div class="card-photo-label">AI &amp; Experiment</div>
+            </div>
+            <div class="card-body">
+              <h3>Foto &rarr; 3D model</h3>
+              <p>Experimentální pipeline: vyfotíte objekt a pomocí LLM vznikne parametrický 3D model k vytištění. Kde se potkává AI a fyzický svět.</p>
+            </div>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="o-nas">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2>O nás</h2>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            Jsme <strong>Matterhackers Radošov</strong> -- rodina tvůrců z Radošova u Karlových Varů.
+            Filip Novotný (fyzik a maker) spolu s rodinou ve věku od 7 do 40+ staví tiskárny,
+            navrhuje modely, bastlí elektroniku a tvoří umění.
+          </p>
+          <p>
+            Na MakerFaire chceme ukázat, že technologie a tvořivost nemají věkový limit.
+            Každý z nás přispívá po svém -- od návrhu v CADu po malování hennou.
+            Přijďte se podívat, osahat si modely a popovídat si o tvoření.
+          </p>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-value">350&times;350</div>
+            <div class="stat-label">mm tiskový objem</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">0.1mm</div>
+            <div class="stat-label">přesnost tisku</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">Klipper</div>
+            <div class="stat-label">firmware</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">CoreXY</div>
+            <div class="stat-label">kinematics</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">5</div>
+            <div class="stat-label">projektů</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">1</div>
+            <div class="stat-label">rodina</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-name">
+        <strong>Matterhackers Radošov</strong> &middot; MakerFaire Karlovy Vary 2026
+      </div>
+      <nav class="footer-links">
+        <a href="#projekty">Projekty</a>
+        <a href="#o-nas">O nás</a>
+        <a href="https://makerfaire.cz/projekt/matterhackers-radosov-radost-z-tvoreni/" target="_blank" rel="noopener">MakerFaire</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>
