@@ -1,0 +1,22 @@
+# /etc/systemd/network/30-eth0.network
+#
+# eth0 — first 10GbE port (RTL8127), LAN device (e.g. Voron 2.4r2 or switch).
+# This enslaves eth0 to br-lan. The bridge master (br-lan) handles all
+# addressing; eth0 itself gets no IP address.
+#
+# ConfigureWithoutCarrier=yes: write config even if no cable is plugged in
+# at boot time. Without this, networkd may never configure the interface
+# if it starts before the cable is connected.
+
+[Match]
+Name=eth0
+
+[Network]
+Bridge=br-lan
+LinkLocalAddressing=no
+DHCP=no
+IPv6AcceptRA=no
+ConfigureWithoutCarrier=yes
+
+[Link]
+RequiredForOnline=no

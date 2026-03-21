@@ -1,0 +1,21 @@
+# /etc/systemd/network/20-br-lan.netdev
+#
+# Create the br-lan bridge device.
+# This .netdev file is processed before any .network files, so the
+# bridge exists by the time eth0/eth1 slave .network files run.
+#
+# STP (Spanning Tree Protocol) is disabled — there are no loops in our
+# simple star topology (eth0 + eth1 + wlan1-AP bridged together).
+# Enabling STP would add a 30-second forwarding delay on boot.
+
+[NetDev]
+Name=br-lan
+Kind=bridge
+Description=LAN bridge — eth0 + eth1 + wlan1 AP
+
+[Bridge]
+STP=no
+# Forward delay 0 requires STP=no
+ForwardDelaySec=0
+HelloTimeSec=2
+MaxAgeSec=20

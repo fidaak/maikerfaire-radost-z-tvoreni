@@ -1,0 +1,38 @@
+# /etc/systemd/network/10-wan.network
+#
+# WAN interface: wlan0 (MT7925B internal WiFi, venue uplink).
+# wpa_supplicant@wlan0.service must be running before this interface
+# gets carrier; systemd-networkd waits for carrier automatically.
+#
+# KEY POINTS:
+# - DHCP client on wlan0 for venue-assigned IP
+# - RouteMetric=100 makes the WAN default route lower priority than
+#   any static routes on the LAN (LAN routes typically metric 0-10)
+# - UseRoutes=yes  → accept default route from DHCP (needed for internet)
+# - UseDNS=no      → dnsmasq handles DNS; do not push venue DNS into
+#                    systemd-resolved for the whole machine
+# - ConfigureWithoutCarrier=yes → networkd writes config even if wlan0
+#   has no carrier yet (wpa_supplicant hasn't associated); avoids a
+#   race where networkd skips the interface entirely on boot
+
+[Match]
+Name=wlan0
+
+[Network]
+DHCP=ipv4
+IPv6AcceptRA=no
+LinkLocalAddressing=ipv4
+
+[DHCP]
+RouteMetric=100
+UseRoutes=yes
+UseDNS=no
+UseNTP=no
+UseDomains=no
+# Send hostname to DHCP server (helps venue routers identify us)
+Hostname=makerbooth-ms-s1
+
+[Link]
+# Do NOT require this interface to be online before boot completes —
+# venue WiFi may be unavailable; the booth must still function offline.
+RequiredForOnline=no

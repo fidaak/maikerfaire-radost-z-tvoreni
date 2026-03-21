@@ -1,0 +1,20 @@
+# /etc/systemd/network/30-eth1.network
+#
+# eth1 — second 10GbE port (RTL8127), LAN device (e.g. Voron 2.4r2 or switch).
+# Identical to 30-eth0.network — both ports are enslaved to br-lan.
+#
+# Use one for a direct connection to Voron 2.4r2, the other for a switch
+# or additional wired device.
+
+[Match]
+Name=eth1
+
+[Network]
+Bridge=br-lan
+LinkLocalAddressing=no
+DHCP=no
+IPv6AcceptRA=no
+ConfigureWithoutCarrier=yes
+
+[Link]
+RequiredForOnline=no

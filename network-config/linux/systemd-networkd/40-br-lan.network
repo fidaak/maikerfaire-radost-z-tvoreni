@@ -1,0 +1,28 @@
+# /etc/systemd/network/40-br-lan.network
+#
+# Static IP configuration on the br-lan bridge.
+# This is the router's LAN-side address — the default gateway for all
+# LAN clients (printers, AP clients, etc.).
+#
+# 192.168.100.1/24 is chosen to avoid collision with:
+#   - 192.168.0.x / 192.168.1.x (common home routers)
+#   - 10.0.0.x (common corporate / VPN ranges)
+#   - 172.16-31.x (Docker default)
+#
+# ConfigureWithoutCarrier=yes: br-lan has no carrier until at least one
+# member port comes up; without this flag networkd will not configure the
+# bridge until then. With it, the static IP is applied immediately so
+# dnsmasq / hostapd can bind.
+
+[Match]
+Name=br-lan
+
+[Network]
+Address=192.168.100.1/24
+# No gateway — the bridge is our LAN; default gateway comes from wlan0 DHCP
+IPv6AcceptRA=no
+LinkLocalAddressing=no
+ConfigureWithoutCarrier=yes
+
+[Link]
+RequiredForOnline=no
