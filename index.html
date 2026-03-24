@@ -1,6 +1,38 @@
 <!DOCTYPE html>
-<html><head>
+<html lang="cs">
+<head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=web/index-v2.html">
-  <script>window.location.replace("web/index-v2.html")</script>
-</head><body></body></html>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matterhackers Radošov – MakerFaire KV 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #0a0a0a;
+      color: #e8e0d8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .wrap { max-width: 560px; width: 100%; }
+    .label { font-size: 0.75rem; color: #a52200; margin-bottom: 1.5rem; letter-spacing: 0.08em; }
+    h1 { font-size: clamp(1.75rem, 5vw, 2.5rem); color: #fff; margin-bottom: 0.5rem; }
+    h1 span { color: #f5c800; }
+    p { color: #8a8070; font-size: 0.85rem; line-height: 1.7; margin-top: 1rem; }
+    .divider { border: none; border-top: 1px solid #242020; margin: 1.5rem 0; }
+    .prompt { color: #f5c800; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="label">$ status --event=makerfaire-kv-2026</p>
+    <h1>RADOST Z <span>TVOŘENÍ</span></h1>
+    <hr class="divider">
+    <p class="prompt">&gt; Událost proběhla. Děkujeme všem návštěvníkům!</p>
+    <p>MakerFaire Karlovy Vary 2026 · Matterhackers Radošov</p>
+  </div>
+</body>
+</html>
